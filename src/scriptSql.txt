@@ -1,0 +1,33 @@
+-- Script Postgress para criação do código do banco de dados:
+
+-- instalação do uuid para gerar sozinho no banco de dados
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- criação da tabela users
+create table users (
+	id UUID DEFAULT uuid_generate_v4(),
+	username VARCHAR(255) UNIQUE NOT NULL,
+	password VARCHAR(255) UNIQUE NOT NULL,
+	role VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- criação da tabela type_products
+CREATE TABLE type_products (
+	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    criado_em TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+	modificado_em TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    ativo BOOLEAN,
+    nome VARCHAR(255),
+    codigo VARCHAR(3)
+);
+
+
+-- criação da tabela produto
+CREATE TABLE produto (
+	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    tipo_produto UUID REFERENCES type_products(id),
+    criado_em TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+	modificado_em TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    ativo BOOLEAN,
+    nome VARCHAR(255)
+);
